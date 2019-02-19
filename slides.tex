@@ -1,0 +1,173 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\title{AddressSanitizer and Friends}
+\subtitle{With some bonus ramblings about property based testing}
+\date{\today}
+\date{}
+\author{Louis Taylor}
+%\institute{Jetstack}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents %[hideallsubsections]
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}[fragile]{Introduction}
+
+Danger level: high
+
+\begin{itemize}
+    \item undefined behaviour
+    \item buffer overflows
+    \item memory leaks
+    \item uninitialised memory
+    \item integer overflows
+\end{itemize}
+\end{frame}
+
+\section{Sanitizers}
+
+\begin{frame}[fragile]{Sanitizers}
+A set of tools developed by Google,
+
+Supported by GCC (from 4.8) and Clang (from 3.1)
+
+Gives feedback as soon as a problem is found
+\end{frame}
+
+\section{-fsanitize=address}
+
+\begin{frame}[fragile]{-fsanitize=address}
+  Easy to get started:
+  
+  \begin{verbatim}gcc -fsanitize=address -o demo1 demo1.c\end{verbatim}
+  
+  Use binary as normal
+
+\end{frame}
+
+\begin{frame}[fragile]{-fsanitize=address}
+  Demo:
+
+  \begin{verbatim}demo1.c
+demo2.c\end{verbatim}
+
+\end{frame}
+
+\section{-fsanitize=undefined}
+
+\begin{frame}[fragile]{-fsanitize=undefined}
+  Detects undefined behaviour at runtime
+
+  \begin{verbatim}-fsanitize=alignment
+-fsanitize=bool
+-fsanitize=builtin
+-fsanitize=bounds
+-fsanitize=enum
+-fsanitize=float-cast-overflow
+-fsanitize=float-divide-by-zero
+-fsanitize=function
+-fsanitize=implicit-unsigned-integer-truncation
+-fsanitize=implicit-signed-integer-truncation
+-fsanitize=implicit-integer-sign-change
+-fsanitize=integer-divide-by-zero
+-fsanitize=nonnull-attribute
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{-fsanitize=undefined}
+
+  \begin{verbatim}-fsanitize=null
+-fsanitize=nullability-arg
+-fsanitize=nullability-assign
+-fsanitize=nullability-return
+-fsanitize=object-size
+-fsanitize=pointer-overflow
+-fsanitize=return
+-fsanitize=returns-nonnull-attribute
+-fsanitize=shift
+-fsanitize=signed-integer-overflow
+-fsanitize=unreachable
+-fsanitize=unsigned-integer-overflow
+-fsanitize=vla-bound
+-fsanitize=vptr\end{verbatim}
+
+\end{frame}
+
+\section{-fsanitize=thread}
+
+\section{Property based testing}
+
+\begin{frame}[fragile]{Property based testing}
+ 
+ ``The thing that QuickCheck does''
+ 
+ Define a property, and ensure the property holds true for any given input
+ 
+ Shrink the input to find a minimal failing case
+ 
+ Like fuzzing, except fuzzing is generally trying to find crashes
+ 
+ \url{https://github.com/silentbicycle/theft}
+
+\end{frame}
+
+\begin{frame}[fragile]{Property based testing}
+ 
+ Property based testing + sanitizers
+ 
+ Sanitizers only work with enough coverage
+ 
+ Powerful combination
+ 
+\end{frame}
+
+\section{Summary}
+
+\begin{frame}[fragile]{Summary}
+ Sanitizers are good, use them if you can
+ 
+ Property based testing is good, use it if you can
+ 
+ Using them together is good, try it if you can
+
+\end{frame}
+
+
+\begin{frame}{Questions?}
+
+  Get the demos and some other bits from:
+
+  \begin{center}\url{github.com/kragniz/sanitize_things}\end{center}
+
+\end{frame}
+
+\end{document}
